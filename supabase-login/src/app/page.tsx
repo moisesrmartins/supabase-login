@@ -3,9 +3,23 @@
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import AuthRedirect from '@/components/Auth/AuthRedirect'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
   const { session } = useAuth()
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p>Carregando...</p>
+      </div>
+    )
+  }
 
   return (
     <>
