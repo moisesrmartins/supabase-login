@@ -1,28 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { useAuth } from '@/contexts/AuthContext'
+import ClientOnly from '@/components/ClientOnly'
 import AuthRedirect from '@/components/Auth/AuthRedirect'
-import { useEffect, useState } from 'react'
+import HydrationFallback from '@/components/HydrationFallback'
+import { Suspense } from 'react'
 
 export default function Home() {
-  const { session } = useAuth()
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
-  if (!isClient) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p>Carregando...</p>
-      </div>
-    )
-  }
-
   return (
-    <>
+    <ClientOnly fallback={<HydrationFallback />}>
       <AuthRedirect requireAuth={false} to="/dashboard" />
 
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
@@ -30,18 +16,18 @@ export default function Home() {
         <div className="space-x-4">
           <Link
             href="/login"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded text-lg"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded text-lg transition-colors"
           >
             Entrar
           </Link>
           <Link
             href="/dashboard"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded text-lg"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded text-lg transition-colors"
           >
             Dashboard
           </Link>
         </div>
       </div>
-    </>
+    </ClientOnly>
   )
 }

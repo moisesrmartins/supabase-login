@@ -2,6 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { Suspense } from 'react'
+import HydrationFallback from '@/components/HydrationFallback'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,7 +21,9 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
-          {children}
+          <Suspense fallback={<HydrationFallback />}>
+            {children}
+          </Suspense>
         </AuthProvider>
       </body>
     </html>

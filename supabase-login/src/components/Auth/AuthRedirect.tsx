@@ -1,26 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+
+interface AuthRedirectProps {
+    requireAuth?: boolean
+    to: string
+}
 
 export default function AuthRedirect({
     requireAuth = true,
     to
-}: {
-    requireAuth?: boolean
-    to: string
-}) {
-    const [isMounted, setIsMounted] = useState(false)
+}: AuthRedirectProps) {
     const { session, loading } = useAuth()
     const router = useRouter()
 
     useEffect(() => {
-        setIsMounted(true)
-    }, [])
-
-    useEffect(() => {
-        if (!isMounted || loading) return
+        if (loading) return
 
         if (requireAuth && !session) {
             router.replace(to)
@@ -29,7 +26,7 @@ export default function AuthRedirect({
         if (!requireAuth && session) {
             router.replace(to)
         }
-    }, [session, loading, requireAuth, to, router, isMounted])
+    }, [session, loading, requireAuth, to, router])
 
     return null
 }
