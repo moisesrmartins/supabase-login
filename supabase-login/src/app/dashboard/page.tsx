@@ -3,7 +3,7 @@
 import { useAuth } from '@/contexts/AuthContext'
 import AuthRedirect from '@/components/Auth/AuthRedirect'
 import { supabase } from '@/lib/supabase/supabaseClient'
-import StatsCard from '@/components/Dashboard/StatsCard'
+import StatsCard, { TrendType } from '@/components/Dashboard/StatsCard'
 import RecentActivity from '@/components/Dashboard/RecentActivity'
 import QuickActions from '@/components/Dashboard/QuickActions'
 import UserSummary from '@/components/Dashboard/UserSummary'
@@ -50,30 +50,36 @@ export default function Dashboard() {
 
                 <main>
                     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 px-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4">
                             <StatsCard
                                 title="Total de Clientes"
                                 value="1,248"
                                 change="+12%"
-                                isPositive={true}
+                                trend="positive"
                             />
                             <StatsCard
                                 title="Conversão Mensal"
                                 value="24.3%"
                                 change="+2.5%"
-                                isPositive={true}
+                                trend="positive"
                             />
                             <StatsCard
                                 title="Ticket Médio"
                                 value="R$ 124,80"
                                 change="-1.8%"
-                                isPositive={false}
+                                trend="negative"
                             />
                             <StatsCard
                                 title="Satisfação"
                                 value="92%"
                                 change="+0.5%"
-                                isPositive={true}
+                                trend="positive"
+                            />
+                            <StatsCard
+                                title="Produtividade"
+                                value="78%"
+                                change="0%"
+                                trend="neutral"
                             />
                         </div>
                         <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6 px-4">
