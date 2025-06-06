@@ -4,13 +4,14 @@ import { useAuth } from '@/contexts/AuthContext'
 import AuthRedirect from '@/components/Auth/AuthRedirect'
 import { supabase } from '@/lib/supabase/supabaseClient'
 import StatsCard from '@/components/Dashboard/StatsCard'
+import RecentActivity from '@/components/Dashboard/RecentActivity'
 
 export default function Dashboard() {
     const { session } = useAuth()
 
     return (
         <>
-            <AuthRedirect requireAuth to="/login" />
+            {/* <AuthRedirect requireAuth to="/login" /> */}
 
             <div className="min-h-screen bg-gray-50">
                 <header className="bg-white shadow">
@@ -52,6 +53,11 @@ export default function Dashboard() {
                                 change="+0.5%"
                                 isPositive={true}
                             />
+                        </div>
+                        <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6 px-4">
+                            <div className="lg:col-span-2">
+                                <RecentActivity />
+                            </div>
                         </div>
                         <div className="px-4 py-6 sm:px-0">
                             <div className="bg-white p-6 rounded-lg shadow">
