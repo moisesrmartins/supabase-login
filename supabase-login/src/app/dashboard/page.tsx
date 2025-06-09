@@ -2,15 +2,24 @@
 
 import { useAuth } from '@/contexts/AuthContext'
 import AuthRedirect from '@/components/Auth/AuthRedirect'
-import { supabase } from '@/lib/supabase/supabaseClient'
-import StatsCard, { TrendType } from '@/components/Dashboard/StatsCard'
+import StatsCard from '@/components/Dashboard/StatsCard'
 import RecentActivity from '@/components/Dashboard/RecentActivity'
 import QuickActions from '@/components/Dashboard/QuickActions'
 import UserSummary from '@/components/Dashboard/UserSummary'
-import { BellIcon } from '@heroicons/react/24/outline'
+import { supabase } from '@/lib/supabase/supabaseClient'
+import { useState } from 'react'
+
+function BellIcon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+    )
+}
 
 export default function Dashboard() {
     const { session } = useAuth()
+    const [activityExpanded, setActivityExpanded] = useState(false)
 
     return (
         <>
@@ -50,7 +59,7 @@ export default function Dashboard() {
 
                 <main>
                     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 px-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 px-4 mb-6">
                             <StatsCard
                                 title="Total de Clientes"
                                 value="1,248"
@@ -82,24 +91,17 @@ export default function Dashboard() {
                                 trend="neutral"
                             />
                         </div>
-                        <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6 px-4">
-                            <div className="lg:col-span-2">
-                                <RecentActivity />
+
+                        <div className={`flex flex-col gap-6 px-4 ${activityExpanded ? 'lg:flex-col' : 'lg:flex-row'}`}>
+                            <div className={`${activityExpanded ? 'w-full' : 'lg:w-2/3'}`}>
+                                <RecentActivity
+                                    onExpandToggle={(expanded) => setActivityExpanded(expanded)}
+                                />
                             </div>
-                        </div>
-                        <div>
-                            <QuickActions />
-                            <UserSummary user={session?.user || null} />
-                        </div>
-                        <div className="px-4 py-6 sm:px-0">
-                            <div className="bg-white p-6 rounded-lg shadow">
-                                <h2 className="text-xl font-semibold mb-4">Bem-vindo à sua Dashboard!</h2>
-                                {session && (
-                                    <div>
-                                        <p><strong>Email:</strong> {session.user?.email}</p>
-                                        <p><strong>ID:</strong> {session.user?.id}</p>
-                                    </div>
-                                )}
+
+                            <div className={`${activityExpanded ? 'w-full mt-6' : 'lg:w-1/3'} space-y-6`}>
+                                <QuickActions />
+                                <UserSummary user={session?.user || null} />
                             </div>
                         </div>
                     </div>
